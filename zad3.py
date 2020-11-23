@@ -20,11 +20,6 @@ for row in range(8):
     print("]")
 
 
-
-def is_in_range(pos):
-    return False if pos[0] > 7 or pos[1] > 7 else True
-
-
 def find_route(T, pos=(7, 0)):
     if pos[0] > 7 or pos[1] > 7:
         return None
