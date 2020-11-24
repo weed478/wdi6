@@ -16,35 +16,41 @@ def skoczek_moves(pos):
             (c + 1, r + 2))
 
 
-def aval_moves(board, pos, N):
-    return filter(lambda m: 0 <= m[0] < N and 0 <= m[1] < N and board[m[0]][m[1]] < 0, skoczek_moves(pos))
+def konik(board_size):
+    def move_valid(move):
+        return 0 <= move[0] < board_size and 0 <= move[1] < board_size
 
+    static_moves = [[tuple() for _ in range(board_size)] for _ in range(board_size)]
 
-def jumpto(board, pos, N, jumps=1):
-    board[pos[0]][pos[1]] = jumps
-
-    if jumps >= N * N:
-        return True
-
-    moves = aval_moves(board, pos, N)
-
-    for move in moves:
-        if jumpto(board, move, N, jumps + 1):
-            return True
+    for c in range(board_size):
+        for r in range(board_size):
+            static_moves[c][r] = tuple(filter(move_valid, skoczek_moves((c, r))))
         end
     end
 
-    board[pos[0]][pos[1]] = -1
+    board = [[-1 for _ in range(board_size)] for _ in range(board_size)]
 
-    return False
+    def jumpto(pos, jumps=1):
+        board[pos[0]][pos[1]] = jumps
 
+        if jumps >= board_size * board_size:
+            return True
 
-def fill_skoczek(N):
-    board = [[-1 for _ in range(N)] for _ in range(N)]
+        for move in static_moves[pos[0]][pos[1]]:
+            if board[move[0]][move[1]] < 0:
+                if jumpto(move, jumps + 1):
+                    return True
+                end
+            end
+        end
 
-    for c in range(N):
-        for r in range(N):
-            if jumpto(board, (c, r), N):
+        board[pos[0]][pos[1]] = -1
+
+        return False
+
+    for c in range(board_size):
+        for r in range(board_size):
+            if jumpto((c, r)):
                 return board
             end
         end
@@ -53,7 +59,7 @@ def fill_skoczek(N):
     return board
 
 
-b = fill_skoczek(6)
+b = konik(6)
 for row in b:
     for i in row:
         print("\t" + str(i), end="")
