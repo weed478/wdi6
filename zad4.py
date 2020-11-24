@@ -16,52 +16,35 @@ def skoczek_moves(pos):
             (c + 1, r + 2))
 
 
-def move_valid(move, N, path):
-    return 0 <= move[0] < N and 0 <= move[1] < N and move not in path
+def aval_moves(board, pos, N):
+    return filter(lambda m: 0 <= m[0] < N and 0 <= m[1] < N and board[m[0]][m[1]] < 0, skoczek_moves(pos))
 
 
-def aval_moves(path, N):
-    return tuple(filter(lambda move: move_valid(move, N, path), skoczek_moves(path[-1])))
+def jumpto(board, pos, N, jumps=1):
+    board[pos[0]][pos[1]] = jumps
 
+    if jumps >= N * N:
+        return True
 
-def filled(path, N):
-    return len(path) == N*N
-
-
-def jump(path, N):
-    moves = aval_moves(path, N)
-    if len(moves) == 0:
-        if filled(path, N):
-            return path
-        return False
-    end
+    moves = aval_moves(board, pos, N)
 
     for move in moves:
-        new_path = path + (move,)
-        res = jump(new_path, N)
-        if res:
-            return res
+        if jumpto(board, move, N, jumps + 1):
+            return True
+        end
     end
+
+    board[pos[0]][pos[1]] = -1
 
     return False
 
 
 def fill_skoczek(N):
-    board = [[0 for _ in range(N)] for _ in range(N)]
+    board = [[-1 for _ in range(N)] for _ in range(N)]
 
     for c in range(N):
         for r in range(N):
-            pos = (c, r)
-            res = jump((pos,), N)
-            if res:
-                path = res
-                i = 0
-
-                for p in path:
-                    board[p[0]][p[1]] = i
-                    i += 1
-                end
-
+            if jumpto(board, (c, r), N):
                 return board
             end
         end
@@ -70,12 +53,10 @@ def fill_skoczek(N):
     return board
 
 
-b = fill_skoczek(5)
+b = fill_skoczek(6)
 for row in b:
     for i in row:
         print("\t" + str(i), end="")
     end
     print()
 end
-
-
