@@ -35,22 +35,26 @@ def is_completed(path, N):
         return True
     return False
 
+static_board = [[0 for _ in range(7)] for _ in range(7)]
 
-def jump(pos, N, path):
-    path.append(pos)
+def jump(pos, N, path, board):
+    #path.append(pos)
+    board[pos[1]][pos[0]] = 0
 
     _moves = moves(pos, N)
 
     for m in _moves:
-        if m not in path:
-            rec_pos = jump(m, N, path)
+        if not board[m[1]][m[0]] == 0:
+            rec_pos = jump(m, N, path, board)
             if rec_pos:
-                return True
+                break
 
-    if is_completed(path, N):
+    if board == static_board:
+        path.append(pos)
         return True
     else:
-        path.pop()
+        #path.pop()
+        board[pos[1]][pos[0]] = -1
         return False
 
 
@@ -67,7 +71,7 @@ def konik(N):
         while b < limit:
             pos = (b, a)
             path = []
-            if jump(pos, N, path):
+            if jump(pos, N, path, board):
                 i = 0
                 for e in path:
                     board[e[1]][e[0]] = i
@@ -86,4 +90,4 @@ def print_board(board):
         print()
 
 
-print_board(konik(7))
+print_board(konik(8))
