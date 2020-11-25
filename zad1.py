@@ -1,23 +1,4 @@
-def myszka(num, min_len, min_cut):
-    def ultimyszka(number=0, pos=0, depth=0):
-        space_after = min_cut - 1 - depth
-        for a in range(pos, len(num_tab) - max(0, space_after)):
-            new_number = number * 10 + num_tab[len(num_tab) - a - 1]
-            if depth >= min_len - 1:
-                yield new_number
-
-            if space_after >= 0 or a + 1 < len(num_tab):
-                if depth + 1 < len(num_tab) - min_cut:
-                    for i in ultimyszka(new_number, a + 1, depth + 1):
-                        yield i
-
-    num_tab = []
-    while num > 0:
-        num, r = divmod(num, 10)
-        num_tab.append(r)
-
-    if len(num_tab) > 0 and len(num_tab) >= min_len > 0 and len(num_tab) - min_len >= min_cut >= 0:
-        return ultimyszka()
+end = None
 
 
 def is_prime(n):
@@ -27,14 +8,46 @@ def is_prime(n):
         return True
     elif n % 2 == 0:
         return False
+    end
 
     div = 3
     while div*div <= n:
         if n % div == 0:
             return False
+        end
         div += 2
+    end
     return True
 
 
-for prime in filter(is_prime, myszka(12345, 2, 1)):
-    print(prime, end=", ")
+checked = set()
+
+
+def cut_digit(num):
+    a = num
+    b = 0
+    c = 0
+    c_len = 0
+
+    while a > 0:
+        c += b * 10**c_len // 10
+        c_len += 1
+        b = a % 10
+        a //= 10
+        cut_num = c + a * 10**c_len // 10
+
+        if cut_num in checked:
+            continue
+
+        if is_prime(cut_num):
+            print(cut_num)
+
+        if cut_num > 99:
+            cut_digit(cut_num)
+
+        checked.add(cut_num)
+    end
+
+
+cut_digit(1234567)
+
