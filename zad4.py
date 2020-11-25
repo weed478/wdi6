@@ -35,12 +35,10 @@ def is_completed(path, N):
         return True
     return False
 
-static_board = [[0 for _ in range(7)] for _ in range(7)]
 
 def jump(pos, N, path, board):
-    #path.append(pos)
     board[pos[1]][pos[0]] = 0
-
+    print(board)
     _moves = moves(pos, N)
 
     for m in _moves:
@@ -53,13 +51,19 @@ def jump(pos, N, path, board):
         path.append(pos)
         return True
     else:
-        #path.pop()
         board[pos[1]][pos[0]] = -1
         return False
 
 
+static_board = []
+
+
 def konik(N):
     board = [[-1 for _ in range(N)] for _ in range(N)]
+    for _ in range(N):
+        static_board.append([])
+        for __ in range(N):
+            static_board[_].append(0)
 
     # every start pos
     div, mod = divmod(N, 2)
