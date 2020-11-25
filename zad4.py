@@ -16,27 +16,41 @@ def skoczek_moves(pos):
             (c + 1, r + 2))
 
 
-def konik(board_size):
+def konik(board_size, starting_point=None, finito=None):
     def move_valid(move):
         return 0 <= move[0] < board_size and 0 <= move[1] < board_size
 
-    static_moves = [[tuple() for _ in range(board_size)] for _ in range(board_size)]
+    static_moves = [[list() for _ in range(board_size)] for _ in range(board_size)]
 
     for c in range(board_size):
         for r in range(board_size):
-            static_moves[c][r] = tuple(filter(move_valid, skoczek_moves((c, r))))
+            static_moves[c][r] = list(filter(move_valid, skoczek_moves((c, r))))
         end
     end
 
     board = [[-1 for _ in range(board_size)] for _ in range(board_size)]
 
+    def num_possible_moves(move):
+        moves = static_moves[move[0]][move[1]]
+        n = 0
+        for m in moves:
+            if board[m[0]][m[1]] < 0:
+                n += 1
+            end
+        end
+        return n
+
+    def warnsdorff(moves):
+        moves.sort(key=lambda m: num_possible_moves(m))
+        return moves
+
     def jumpto(pos, jumps=1):
         board[pos[0]][pos[1]] = jumps
 
-        if jumps >= board_size * board_size:
+        if jumps >= board_size * board_size and (finito is None or pos == finito):
             return True
 
-        for move in static_moves[pos[0]][pos[1]]:
+        for move in warnsdorff(static_moves[pos[0]][pos[1]]):
             if board[move[0]][move[1]] < 0:
                 if jumpto(move, jumps + 1):
                     return True
@@ -48,18 +62,21 @@ def konik(board_size):
 
         return False
 
-    for c in range(board_size):
-        for r in range(board_size):
-            if jumpto((c, r)):
-                return board
+    if starting_point is not None:
+        jumpto(starting_point)
+    else:
+        for c in range(board_size):
+            for r in range(board_size):
+                if jumpto((c, r)):
+                    return board
+                end
             end
         end
-    end
 
     return board
 
 
-b = konik(6)
+b = konik(31, starting_point=(0, 0))
 for row in b:
     for i in row:
         print("\t" + str(i), end="")
