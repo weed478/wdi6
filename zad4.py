@@ -31,9 +31,8 @@ def konik(board_size, starting_point=None, finito=None):
     board = [[-1 for _ in range(board_size)] for _ in range(board_size)]
 
     def num_possible_moves(move):
-        moves = static_moves[move[0]][move[1]]
         n = 0
-        for m in moves:
+        for m in static_moves[move[0]][move[1]]:
             if board[m[0]][m[1]] < 0:
                 n += 1
             end
@@ -41,7 +40,7 @@ def konik(board_size, starting_point=None, finito=None):
         return n
 
     def warnsdorff(moves):
-        moves.sort(key=lambda m: num_possible_moves(m))
+        moves.sort(key=num_possible_moves)
         return moves
 
     def jumpto(pos, jumps=1):
