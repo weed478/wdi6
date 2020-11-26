@@ -5,6 +5,17 @@ def diagonal_placement(n):
     return list(range(n))
 
 
+def stairs_placement(n):
+    p = [0] * n
+    c = 0
+    for r in range(n):
+        p[r] = c
+        c += n + 2
+        c %= n
+
+    return p
+
+
 def random_placement(n):
     p = diagonal_placement(n)
     shuffle(p)
@@ -25,7 +36,7 @@ def occupancy_map(placement):
     diags_down = [0] * (n * 2 - 1)  # \
     diags_up = [0] * (n * 2 - 1)    # /
 
-    for i in range(len(placement)):
+    for i in range(n):
         if placement[i] is None:
             continue
 
@@ -55,11 +66,11 @@ def print_board(board):
         print()
 
 
-def num_conflicts(pos, placement):
+def num_conflicts(pos, placement, o_map):
     n = len(placement)
     row, col, diag_up, diag_down = pos2occupancy(pos, n)
 
-    rows, cols, diags_up, diags_down = occupancy_map(placement)
+    rows, cols, diags_up, diags_down = o_map
     conflicts = rows[row] + cols[col] + diags_up[diag_up] + diags_down[diag_down]
     if placement[pos[0]] == pos[1]:
         conflicts -= 4
@@ -71,9 +82,11 @@ def fix_placement(placement):
     most_conflicts = 0
     move_from_row = None
 
+    o_map = occupancy_map(placement)
+
     for i in range(len(placement)):
         pos = (i, placement[i])
-        n_conflicts = num_conflicts(pos, placement)
+        n_conflicts = num_conflicts(pos, placement, o_map)
         if n_conflicts > most_conflicts:
             most_conflicts = n_conflicts
             move_from_row = i
@@ -89,12 +102,14 @@ def fix_placement(placement):
     original_col = placement[move_from_row]
     placement[move_from_row] = None
 
+    o_map = occupancy_map(placement)
+
     least_conflicts = most_conflicts
     move_to_col = None
 
     for i in range(len(placement)):
         pos = (move_from_row, i)
-        n_conflicts = num_conflicts(pos, placement)
+        n_conflicts = num_conflicts(pos, placement, o_map)
         if n_conflicts < least_conflicts:
             least_conflicts = n_conflicts
             move_to_col = i
@@ -103,25 +118,18 @@ def fix_placement(placement):
 
     if move_to_col is None:
         placement[move_from_row] = original_col
-        return True
+        return False
 
     placement[move_from_row] = move_to_col
 
-    return False
+    return fix_placement(placement)
 
 
-while True:
-    placement = random_placement(20)
-    # board = placement2board(placement)
-    # print_board(board)
+N = 20
+placement = random_placement(N)
+while not fix_placement(placement):
+    placement = random_placement(N)
 
-    while not fix_placement(placement):
-        pass
-
-    if max(map(max, occupancy_map(placement))) == 1:
-        print("Solution found!")
-        board = placement2board(placement)
-        print_board(board)
-        break
-    # else:
-    #     print("Got unlucky")
+board = placement2board(placement)
+print_board(board)
+print("Solution found for", N)
