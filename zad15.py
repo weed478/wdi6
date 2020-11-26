@@ -1,4 +1,4 @@
-from random import shuffle
+from random import shuffle, random, randrange
 
 
 def diagonal_placement(n):
@@ -19,6 +19,27 @@ def stairs_placement(n):
 def random_placement(n):
     p = diagonal_placement(n)
     shuffle(p)
+    return p
+
+
+def heuristic_placement(n, rand):
+    p = [None] * n
+    for r in range(n):
+        if random() < rand:
+            p[r] = randrange(n)
+            continue
+
+        o_map = occupancy_map(p)
+        best_c = 0
+        min_conflicts = num_conflicts((r, best_c), p, o_map)
+        for c in range(1, n):
+            conflicts = num_conflicts((r, c), p, o_map)
+            if conflicts < min_conflicts:
+                min_conflicts = conflicts
+                best_c = c
+
+        p[r] = best_c
+
     return p
 
 
@@ -125,11 +146,15 @@ def fix_placement(placement):
     return fix_placement(placement)
 
 
-N = 20
-placement = random_placement(N)
+N = 30
+placement = heuristic_placement(N, 0)
+print_board(placement2board(placement))
+print()
+tries = 1
 while not fix_placement(placement):
-    placement = random_placement(N)
+    tries += 1
+    placement = heuristic_placement(N, 0.3)
 
 board = placement2board(placement)
 print_board(board)
-print("Solution found for", N)
+print("Solution found for", N, 'after', tries, "tries")
