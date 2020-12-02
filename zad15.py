@@ -81,9 +81,12 @@ def placement2board(placement):
 
 
 def print_board(board):
-    for row in board:
-        for i in row:
-            print(i, end="\t")
+    for r in range(len(board)):
+        for c in range(len(board[0])):
+            p = (r ^ c) & 1 == 0
+            fg = "\x1b[38;5;0m"
+            bg = "\x1b[48;5;15m" if p else "\x1b[48;5;8m"
+            print(fg, bg, "\u2005", "\u2655" if board[r][c] else "\u2003", "\u2005", "\x1b[0m", sep="", end="")
         print()
 
 
