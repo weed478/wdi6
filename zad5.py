@@ -1,7 +1,3 @@
-from math import log10
-from random import randint
-
-
 def is_prime(n):
     if n < 2:
         return False
@@ -18,30 +14,33 @@ def is_prime(n):
     return True
 
 
-def bin_to_dec(num):
+def is_even(t):
+    return t[len(t) - 1] == 0
+
+
+def tab_to_dec(t):
     a = 0
-    i = 1
-    while num > 0:
-        num, rem = divmod(num, 10)
-        a += rem * i
-        i <<= 1
+
+    for i in t:
+        a <<= 1
+        a += i
+
     return a
 
 
-def split(tab, pos=0, num=0):
-    # print(num)
-    if not pos >= len(tab):
-        a = split(tab, pos + 1, num * 10 + tab[pos])
-        if a:
-            return True
-        b = False
-        if is_prime(bin_to_dec(num)):
-            b = split(tab, pos + 1, tab[pos])
-        return b
-    if log10(bin_to_dec(num) + 1) != len(tab):
-        return is_prime(bin_to_dec(num))
+def carbon_split(tab, start=0):
+    def is_gut(t, start, stop):
+        return is_prime(tab_to_dec(t[start:stop]))
+
+    for leen in range(1, len(tab) - 1):
+        if is_gut(tab, start, start + leen):
+            return carbon_split(tab, start + leen)
+
+    return is_gut(tab, start, len(tab))
 
 
-T = [randint(0, 1) for _ in range(10)]
+# T = [randint(0, 1) for _ in range(10)]
+T = [1, 1, 0, 1, 0, 0]
 print(T)
-print(split(T))
+print()
+print(carbon_split(T))
