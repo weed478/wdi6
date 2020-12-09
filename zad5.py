@@ -20,11 +20,11 @@ def is_prime(n):
 
 def bin_to_dec(num):
     a = 0
-    i = 0
+    i = 1
     while num > 0:
         num, rem = divmod(num, 10)
-        a += rem * (2 ** i)
-        i += 1
+        a += rem * i
+        i <<= 1
     return a
 
 
