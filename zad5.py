@@ -32,7 +32,7 @@ def carbon_split(tab, start=0):
     def is_gut(t, start, stop):
         return is_prime(tab_to_dec(t[start:stop]))
 
-    for leen in range(1, len(tab) - 1):
+    for leen in range(1, len(tab) - 1 - start):
         if is_gut(tab, start, start + leen):
             return carbon_split(tab, start + leen)
 
