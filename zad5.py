@@ -1,49 +1,53 @@
-from random import randint
-end = None
-
-
 def is_prime(n):
     if n < 2:
         return False
-    if n == 2:
+    elif n == 2:
         return True
+    elif n % 2 == 0:
+        return False
 
-    x = 2
-    while x*x <= n:
-        if n % x == 0:
+    div = 3
+    while div * div <= n:
+        if n % div == 0:
             return False
-
-        x += 2
-    end
-
+        div += 2
     return True
 
 
-def can_cut(tab):
-    a = tab[0] * 2 + tab[1]
+def is_even(t):
+    return t[len(t) - 1] == 0
 
-    b = 0
-    for i in tab[2:]:
-        b <<= 1
-        b |= i
-    end
 
-    for i in range(2, len(tab) - 2):
-        # print("a =", bin(a), "b =", bin(b))
+def tab_to_dec(t):
+    a = 0
 
-        if is_prime(a) and is_prime(b):
-            print(a, b)
-            return True
-
+    for i in t:
         a <<= 1
-        a |= tab[i]
+        a += i
 
-        b -= tab[i] << (len(tab) - i - 1)
-    end
-
-    return False
+    return a
 
 
-T = [randint(0, 1) for _ in range(10)]
+def carbon_split(tab, start=0, is_top=True):
+    def is_gut(t, start, stop):
+        return is_prime(tab_to_dec(t[start:stop]))
+
+    leen = 1
+    while start + leen < len(tab):
+        if is_gut(tab, start, start + leen):
+            if carbon_split(tab, start + leen, False):
+                return True
+
+        leen += 1
+
+    if is_top:
+        return False
+    else:
+        return is_gut(tab, start, len(tab))
+
+
+# T = [randint(0, 1) for _ in range(10)]
+T = [1, 0, 1]
 print(T)
-print(can_cut(T))
+print()
+print(carbon_split(T))
