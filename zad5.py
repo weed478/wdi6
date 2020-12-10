@@ -28,25 +28,18 @@ def tab_to_dec(t):
     return a
 
 
-def carbon_split(tab, start=0, is_top=True):
+def carbon_split(tab, start=0):
     def is_gut(t, start, stop):
         return is_prime(tab_to_dec(t[start:stop]))
 
-    leen = 1
-    while start + leen < len(tab):
-        if is_gut(tab, start, start + leen):
-            if carbon_split(tab, start + leen, False):
+    for stop in range(start + 1, len(tab)):
+        if is_gut(tab, start, stop):
+            if is_gut(tab, stop, len(tab)) or carbon_split(tab, stop):
                 return True
 
-        leen += 1
-
-    if is_top:
-        return False
-    else:
-        return is_gut(tab, start, len(tab))
+    return False
 
 
-# T = [randint(0, 1) for _ in range(10)]
 T = [1, 0, 1]
 print(T)
 print()
