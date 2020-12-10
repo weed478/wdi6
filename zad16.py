@@ -19,7 +19,7 @@ def weight(text):
 
 
 # return word or None if not found
-def wyraz(s1, s2=""):
+def wyraz(s1, s2):
     s1_weight = weight(s1)
     s2_weight = weight(s2)
 
