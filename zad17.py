@@ -32,8 +32,7 @@ def zad17(a,b):
                 if _num == 0:
                     _num = -1
                 _rem = _rem * (10**l) + num
-                for i in build(_num, b, _rem, l+1):
-                    yield i
+                yield from build(_num, b, _rem, l+1)
 
         yield from next(n1,n2)
         yield from next(n2,n1)
