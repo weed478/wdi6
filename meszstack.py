@@ -35,7 +35,7 @@ def meszgen(T):
         yield meszstack
 
 
-tab = [1, 2, 3]
-
-for s in meszgen(tab):
-    print(s)
+# tab = [1, 2, 3]
+#
+# for s in meszgen(tab):
+#     print(s)
