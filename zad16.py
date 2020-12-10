@@ -8,7 +8,7 @@ def wyraz(s1, s2=""):
         count = 0
         for letter in text:
             for a in "aeiouy":
-                if letter is a:
+                if letter == a:
                     count += 1
         return count
 
