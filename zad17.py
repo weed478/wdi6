@@ -27,7 +27,7 @@ def zad17(a,b):
 
     def build(n1, n2, num=0, l=0):
         def next(a,b):
-            if not a == -1:
+            if a != -1:
                 _num, _rem = divmod(a, 10)
                 if _num == 0:
                     _num = -1
