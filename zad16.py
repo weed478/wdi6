@@ -27,7 +27,17 @@ def wyraz(s1, s2):
         if s2_weight[1] < s1_weight[1]:  # if s2 has less vowels than s1 we cannot make a subset that has the same number of vowels
             return None
 
-    for subset in meszgen(s2):
+    def next_i(i=None):
+        if i is None:
+            return 0
+
+        elif i + 1 < len(s2):
+            return i + 1
+
+        else:
+            return None
+
+    for subset in meszgen(next_i):
         text = ""
         for n in subset:
             text += s2[n]
