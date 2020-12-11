@@ -1,3 +1,4 @@
+from itertools import permutations
 from meszstack import meszgen
 
 
@@ -6,39 +7,39 @@ def zad21(t, s):
 
     def next_i(i=None):
         if i is None:
-            return 0, 0
-
-        elif i[1] + 1 < n:
-            return i[0], i[1] + 1
-
-        elif i[0] + 1 < n:
-            return i[0] + 1, 0
-
+            return 0
+        elif i < n:
+            return i + 1
         else:
             return None
 
-    for pos in meszgen(next_i):
-        cols = set()
-        rows = set()
+    for x in meszgen(next_i):
+        for y in permutations(i for i in range(n)):
+            pos = []
+            for o in range(len(x)):
+                pos.append((x[o], y[o]))
 
-        current_sum = 0
+            cols = set()
+            rows = set()
 
-        for p in pos:
-            if p[0] in rows:
-                break
+            current_sum = 0
 
-            rows.add(p[0])
+            for p in pos:
+                if p[0] in rows:
+                    break
 
-            if p[1] in cols:
-                break
+                rows.add(p[0])
 
-            cols.add(p[1])
+                if p[1] in cols:
+                    break
 
-            current_sum += t[p[0]][p[1]]
+                cols.add(p[1])
 
-        if current_sum == s:
-            print(pos)
-            return True
+                current_sum += t[p[0]][p[1]]
+
+            if current_sum == s:
+                print(pos)
+                return True
 
     return False
 
