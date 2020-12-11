@@ -8,7 +8,7 @@ def zad21(t, s):
     def next_i(i=None):
         if i is None:
             return 0
-        elif i < n:
+        elif i + 1 < n:
             return i + 1
         else:
             return None
@@ -19,21 +19,9 @@ def zad21(t, s):
             for o in range(len(x)):
                 pos.append((x[o], y[o]))
 
-            cols = set()
-            rows = set()
-
             current_sum = 0
 
             for p in pos:
-                if p[0] in rows:
-                    break
-
-                rows.add(p[0])
-
-                if p[1] in cols:
-                    break
-
-                cols.add(p[1])
 
                 current_sum += t[p[0]][p[1]]
 
@@ -44,7 +32,9 @@ def zad21(t, s):
     return False
 
 
-tab = [[0, 1, 0],
-       [1, 0, 0],
-       [0, 0, 1]]
-print(zad21(tab, 3))
+tab = [[0, 0, 1, 0],
+       [0, 0, 0, 0],
+       [0, 0, 1, 1],
+       [2, 0, 0, 0]]
+
+print(zad21(tab, 4))
