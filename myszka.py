@@ -1,19 +1,25 @@
-def combinations(t, r, comb=None):
-    if comb is None:
-        comb = []
+def combinations_with_replacement(t, r):
+    return combinations(t, r, True)
 
-    i = 0
-    for e in t:
-        comb.append(e)
 
-        if len(comb) == r:
-            yield comb
+def combinations(t, r, replacement=False):
+    comb = []
 
-        else:
-            yield from combinations(t[i + 1:], r, comb)
+    def _combinations(start=0):
+        i = 0
+        for e in t[start:]:
+            comb.append(e)
 
-        comb.pop()
-        i += 1
+            if len(comb) == r:
+                yield comb
+
+            else:
+                yield from _combinations(start + i if replacement else start + i + 1)
+
+            comb.pop()
+            i += 1
+
+    return _combinations()
 
 
 #  https://en.wikipedia.org/wiki/Heap%27s_algorithm
@@ -48,6 +54,11 @@ def permutations(t, r=None):
 
 if __name__ == "__main__":
     for c in combinations(range(1, 4), 2):
+        print(c)
+
+    print()
+
+    for c in combinations_with_replacement(range(1, 4), 2):
         print(c)
 
     print()
