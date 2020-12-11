@@ -31,7 +31,7 @@ if __name__ == "__main__":
         if i is None:
             return 0
 
-        elif i + i < 3:
+        elif i + 1 < 3:
             return i + 1
 
         else:
