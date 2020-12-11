@@ -14,27 +14,22 @@ def zad21(t, s):
             return None
 
     for x in meszgen(next_i):
-        for y in permutations(i for i in range(n)):
-            pos = []
-            for o in range(len(x)):
-                pos.append((x[o], y[o]))
-
+        for y in permutations(range(n), len(x)):
             current_sum = 0
-
-            for p in pos:
-
-                current_sum += t[p[0]][p[1]]
-
+            for o in range(len(x)):
+                current_sum += t[x[o]][y[o]]
             if current_sum == s:
-                print(pos)
                 return True
-
     return False
 
 
-tab = [[0, 0, 1, 0],
-       [0, 0, 0, 0],
-       [0, 0, 1, 1],
-       [2, 0, 0, 0]]
+tab = [[0, 0, 1, 0, 0, 3, 2, 1],
+       [0, 0, 0, 0, 1, 1, 0, 0],
+       [0, 0, 1, 1, 0, 1, 0, 0],
+       [2, 0, 0, 0, 0, 1, 0, 0],
+       [0, 0, 4, 0, 0, 0, 0, 0],
+       [1, 0, 0, 0, 0, 1, 0, 0],
+       [0, 0, 0, 0, 0, 0, 0, 0],
+       [1, 0, 0, 3, 0, 0, 1, 0]]
 
-print(zad21(tab, 4))
+print(zad21(tab, 15))
