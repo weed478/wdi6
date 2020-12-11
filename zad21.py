@@ -17,14 +17,10 @@ def zad21(t, s):
 
     for rows in meszgen(next_i):
         for cols in permutations(range(n), len(rows)):
-            pos = [(r, c) for (r, c) in zip(rows, cols)]
-
-            current_sum = 0
-            for p in pos:
-                current_sum += t[p[0]][p[1]]
+            current_sum = sum(t[p[0]][p[1]] for p in zip(rows, cols))
 
             if current_sum == s:
-                print(pos)
+                print(list(zip(rows, cols)))
                 return True
 
     return False
