@@ -1,13 +1,4 @@
-def meszgen(T):
-    def next_element(element=None):
-        if element is None:
-            return 0
-
-        if element + 1 < len(T):
-            return element + 1
-        else:
-            return None
-
+def meszgen(next_element):
     meszstack = []
 
     def end():
@@ -36,6 +27,15 @@ def meszgen(T):
 
 
 if __name__ == "__main__":
-  tab = [1, 2, 3]
-  for s in meszgen(tab):
-      print(s)
+    def next_i(i=None):
+        if i is None:
+            return 0
+
+        elif i + 1 < 3:
+            return i + 1
+
+        else:
+            return None
+
+    for s in meszgen(next_i):
+        print(s)
