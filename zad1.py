@@ -1,3 +1,5 @@
+from is_prime import is_prime
+
 def myszka(num, min_len, min_cut):
     def ultimyszka(number=0, pos=0, depth=0):
         space_after = min_cut - 1 - depth
@@ -18,22 +20,6 @@ def myszka(num, min_len, min_cut):
 
     if len(num_tab) > 0 and len(num_tab) >= min_len > 0 and len(num_tab) - min_len >= min_cut >= 0:
         return ultimyszka()
-
-
-def is_prime(n):
-    if n < 2:
-        return False
-    elif n == 2:
-        return True
-    elif n % 2 == 0:
-        return False
-
-    div = 3
-    while div*div <= n:
-        if n % div == 0:
-            return False
-        div += 2
-    return True
 
 
 for prime in filter(is_prime, myszka(12345, 2, 1)):
