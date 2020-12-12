@@ -1,5 +1,5 @@
 from meszstack import meszgen
-from itertools import permutations
+from myszka import permutations
 
 
 def zad21(t, s):
