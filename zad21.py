@@ -1,4 +1,4 @@
-from meszstack import meszgen
+from myszka import meszgen
 from myszka import permutations
 
 
