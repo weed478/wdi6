@@ -1,4 +1,4 @@
-from meszstack import meszgen
+from myszka import meszgen
 
 # counts vowels in string
 def vowels(text):
