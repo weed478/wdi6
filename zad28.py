@@ -9,6 +9,8 @@ def gen_podzial(n, l):
                 tab[i + 1] += 1
         if tab[n - 1] < l:
             yield tab
+        else:
+            break
 
 
 def waga(num):
