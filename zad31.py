@@ -1,12 +1,5 @@
 from myszka import meszgen
-
-
-def prime_factors(num):
-    for f in range(2, num + 1):
-        if num % f == 0:
-            yield f
-            while num > 0 and num % f == 0:
-                num //= f
+from is_prime import prime_factors
 
 
 def zad31(num):
